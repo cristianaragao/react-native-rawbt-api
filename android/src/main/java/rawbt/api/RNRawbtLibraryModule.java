@@ -94,10 +94,10 @@ public class RNRawbtLibraryModule extends ReactContextBaseJavaModule {
       reactContext.bindService(RawbtApiHelper.createExplicitIntent(), connectService, Context.BIND_AUTO_CREATE);
     }catch (SecurityException s){
 
-        handlePrintError("Conceda permissão ao RawBT nas configurações e depois reinicie o aplicativo!");
+        handlePrintError("permission_not_granted");
 
     }catch (Exception e) {
-      handlePrintError("Erro ao conectar!");
+      handlePrintError("connection_error");
     }
   }
 
@@ -124,17 +124,17 @@ public class RNRawbtLibraryModule extends ReactContextBaseJavaModule {
   public void printJob(@NonNull String jobGSON, Promise promise){
     if(serviceRawBT == null){
       if(!RawbtApiHelper.isServiceInstalled(reactContext)){
-        promise.reject("Error", "RawBT não instalado!");
+        promise.reject("Error", "not_installed");
         return;
       }
-      promise.reject("Error", "Conceda permissão ao RawBT nas configurações e depois reinicie o aplicativo!");
+      promise.reject("Error", "permission_not_granted");
       return;
     }
     try{
       serviceRawBT.printRawbtPrintJob(jobGSON);
       promise.resolve(true);
     }catch (SecurityException s){
-      promise.reject("Error", "Conceda permissão ao RawBT nas configurações e depois reinicie o aplicativo!");
+      promise.reject("Error", "permission_not_granted");
     }catch (Exception e){
       promise.reject("Error", "Exception: "  + e.getLocalizedMessage());
     }
