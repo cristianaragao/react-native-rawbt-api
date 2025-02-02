@@ -1,4 +1,4 @@
-package rawbt.api;
+package cristianaragao.rawbt.api;
 
 import java.util.Arrays;
 import java.util.Collections;

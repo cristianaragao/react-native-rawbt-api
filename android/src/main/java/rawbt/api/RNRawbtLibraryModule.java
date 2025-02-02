@@ -1,4 +1,4 @@
-package rawbt.api;
+package cristianaragao.rawbt.api;
 
 import android.content.ComponentName;
 import android.content.Context;
@@ -31,6 +31,7 @@ import java.net.URL;
 import rawbt.sdk.ICallback;
 import rawbt.sdk.IRawBtPrintService;
 
+import rawbt.api.RawbtApiHelper;
 
 public class RNRawbtLibraryModule extends ReactContextBaseJavaModule {
 
@@ -93,10 +94,10 @@ public class RNRawbtLibraryModule extends ReactContextBaseJavaModule {
       reactContext.bindService(RawbtApiHelper.createExplicitIntent(), connectService, Context.BIND_AUTO_CREATE);
     }catch (SecurityException s){
 
-        handlePrintError(reactContext.getString(R.string.rawbt_permission_not_granted));
+        handlePrintError("Conceda permissão ao RawBT nas configurações e depois reinicie o aplicativo!");
 
     }catch (Exception e) {
-      handlePrintError(reactContext.getString(R.string.rawbt_connect_error));
+      handlePrintError("Erro ao conectar!");
     }
   }
 
@@ -123,17 +124,17 @@ public class RNRawbtLibraryModule extends ReactContextBaseJavaModule {
   public void printJob(@NonNull String jobGSON, Promise promise){
     if(serviceRawBT == null){
       if(!RawbtApiHelper.isServiceInstalled(reactContext)){
-        promise.reject("Error", reactContext.getString(R.string.rawb_not_installed));
+        promise.reject("Error", "RawBT não instalado!");
         return;
       }
-      promise.reject("Error", reactContext.getString(R.string.rawbt_please_wait));
+      promise.reject("Error", "Conceda permissão ao RawBT nas configurações e depois reinicie o aplicativo!");
       return;
     }
     try{
       serviceRawBT.printRawbtPrintJob(jobGSON);
       promise.resolve(true);
     }catch (SecurityException s){
-      promise.reject("Error", reactContext.getString(R.string.rawbt_permission_not_granted));
+      promise.reject("Error", "Conceda permissão ao RawBT nas configurações e depois reinicie o aplicativo!");
     }catch (Exception e){
       promise.reject("Error", "Exception: "  + e.getLocalizedMessage());
     }
